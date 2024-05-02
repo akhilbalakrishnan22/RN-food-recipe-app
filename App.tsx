@@ -1,8 +1,14 @@
 import React from 'react';
-import OnBoarding from './src/screens/Onboarding/OnBoarding';
+import { SafeAreaView } from 'react-native';
+import Home from './src/screens/Home/Home';
+import globalStyle from './assets/styles/globalStyle';
 
 const App = () => {
-    return <OnBoarding />;
+    return (
+        <SafeAreaView style={[globalStyle.flex, globalStyle.marginHorizontal]}>
+            <Home />
+        </SafeAreaView>
+    );
 };
 
 export default App;
