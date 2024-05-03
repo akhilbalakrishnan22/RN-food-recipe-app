@@ -26,6 +26,10 @@ const style = StyleSheet.create({
         fontFamily: getFontFamily('Inter', '600'),
         fontSize: 18,
     },
+    title7: {
+        fontFamily: getFontFamily('Inter', '400'),
+        fontSize: 10,
+    },
 });
 
 export default style;

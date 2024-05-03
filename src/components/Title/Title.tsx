@@ -23,6 +23,8 @@ const Title = ({ text, color, type = 1 }: TitleProp) => {
                 return style.title5;
             case 6:
                 return style.title6;
+            case 7:
+                return style.title7;
             default:
                 return style.title1;
         }
