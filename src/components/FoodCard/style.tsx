@@ -1,17 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
-    container: {
-        marginTop: 21,
-        width: 205,
-        height: 250,
-        backgroundColor: 'gray',
-        borderRadius: 15,
-    },
     image: {
-        width: 205,
-        height: 250,
-        borderRadius: 15,
+        width: '100%',
+        height: '100%',
     },
 
     // CardInfo Style
@@ -20,17 +12,30 @@ const style = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 17,
         paddingVertical: 12,
-        height: 69,
+        minHeight: 69,
         bottom: 10,
         left: 10,
         right: 10,
     },
+
+    // CardInfo Style for suggestion
+    cardInfoSuggestion: {
+        bottom: 0,
+        left: 0,
+        right: 0,
+        minHeight: 50,
+    },
+    // cardInfoContainer Android Specific
     cardInfoContainerAndroid: {
         backgroundColor: 'rgba(20,20, 20,0.6)',
     },
+    cardInfoContainerSuggestionAndroid: {
+        borderRadius: 15,
+    },
+
     // CardDetails
     cardDetails: {
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     cardDetailsSmall: {
         marginTop: 15,

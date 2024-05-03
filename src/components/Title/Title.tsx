@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import style from './style';
 
 type TitleProp = {
-    type: number;
+    type?: number;
     color: string;
     text: string;
 };

@@ -28,7 +28,7 @@ const style = StyleSheet.create({
     },
     title7: {
         fontFamily: getFontFamily('Inter', '400'),
-        fontSize: 10,
+        fontSize: 12,
     },
 });
 
