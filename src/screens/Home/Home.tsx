@@ -3,6 +3,7 @@ import { FlatList, View } from 'react-native';
 import {
     getItemById,
     getItemsByLocation,
+    getItemsByNameAndIngredient,
     getSuggestedItemAndArea,
 } from '../../api/api';
 import FoodCard from '../../components/FoodCard/FoodCard';
@@ -17,7 +18,61 @@ const Home = () => {
     const [locations, setLocations] = useState<Location[]>([]);
     const [errorMsg, setErrorMsg] = useState<boolean>(false);
     const [trendingFoods, setTrendingFoods] = useState<Meal[]>([]);
+    const [textInput, setTextInput] = useState<string>('');
+    const [searchResults, setSearchResults] = useState<Meal[]>([]);
 
+    const handleSearchInput = (query: string) => {
+        setTextInput(query);
+    };
+
+    // API call for searching food by name and ingredient
+    const handleSearchRequest = () => {
+        const searchItemByNameAndIngredient = async (query: string) => {
+            try {
+                if (query.length > 0) {
+                    setLoading(true);
+                    const { nameBasedItems, ingredientBasedItems } =
+                        await getItemsByNameAndIngredient(query);
+                    setTextInput('');
+                    if (
+                        nameBasedItems === null &&
+                        ingredientBasedItems.length > 0
+                    ) {
+                        setSearchResults(ingredientBasedItems);
+                    } else if (
+                        ingredientBasedItems === null &&
+                        nameBasedItems.length > 0
+                    ) {
+                        setSearchResults(nameBasedItems);
+                    } else {
+                        const mergedItems: Meal[] = [
+                            ...nameBasedItems,
+                            ...ingredientBasedItems,
+                        ];
+
+                        const uniqueItemsMap: { [key: string]: Meal } = {};
+                        // Filter out duplicates using a lookup table
+                        for (const meal of mergedItems) {
+                            if (meal.idMeal != null) {
+                                uniqueItemsMap[meal.idMeal] = meal;
+                            }
+                        }
+                        const uniqueItems: Meal[] =
+                            Object.values(uniqueItemsMap);
+                        setSearchResults(uniqueItems);
+                    }
+                }
+            } catch (error) {
+                console.log('Error: ', error);
+                setErrorMsg(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+        searchItemByNameAndIngredient(textInput);
+    };
+
+    // API call for JustForYou section and location list.
     useEffect(() => {
         const getSuggestedMeal = async () => {
             try {
@@ -36,6 +91,7 @@ const Home = () => {
         getSuggestedMeal();
     }, []);
 
+    // API call for Trending Recipes section by using random location.
     useEffect(() => {
         const locationArray = locations?.map(location => location.strArea);
         const randomLocation = Math.floor(
@@ -87,7 +143,11 @@ const Home = () => {
     return (
         <View style={style.container}>
             <Title type={1} text={'Discover Best Recipes'} color={'#25AE87'} />
-            <SearchBar />
+            <SearchBar
+                text={textInput}
+                onType={handleSearchInput}
+                onEnter={handleSearchRequest}
+            />
             {suggestedMeal?.length > 0 && !errorMsg && (
                 <View style={style.suggestion}>
                     <Title type={2} text={'Just For You'} color={'black'} />
@@ -104,6 +164,7 @@ const Home = () => {
                 <View style={style.trendingContainer}>
                     <Title type={2} text={'Trending Recipes'} color={'black'} />
                     <FlatList
+                        keyExtractor={item => item.idMeal!}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         data={trendingFoods}

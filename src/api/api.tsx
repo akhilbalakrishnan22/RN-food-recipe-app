@@ -32,3 +32,24 @@ export const getItemById = async (id: number): Promise<Meal[]> => {
     const idBasedRequest = await axios.get(`${base_url}/lookup.php?i=${id}`);
     return idBasedRequest.data.meals;
 };
+
+export const getItemsByNameAndIngredient = async (
+    query: string,
+): Promise<{ nameBasedItems: Meal[]; ingredientBasedItems: Meal[] }> => {
+    const nameBasedRequest = await axios.get(
+        `${base_url}/search.php?s=${query}`,
+    );
+    const ingredientBasedRequest = await axios.get(
+        `${base_url}/filter.php?i=${query}`,
+    );
+
+    const [nameBasedResponse, ingredientBasedResponse] = await axios.all([
+        nameBasedRequest,
+        ingredientBasedRequest,
+    ]);
+
+    return {
+        nameBasedItems: nameBasedResponse.data.meals,
+        ingredientBasedItems: ingredientBasedResponse.data.meals,
+    };
+};

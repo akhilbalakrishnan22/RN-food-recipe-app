@@ -5,11 +5,11 @@ const style = StyleSheet.create({
     searchContainer: {
         marginTop: 32,
         backgroundColor: '#EFEFEF',
-        borderRadius: 15,
+        borderRadius: 13,
     },
     textInput: {
-        padding: 20,
-        borderRadius: 15,
+        padding: 18,
+        borderRadius: 13,
         fontFamily: getFontFamily('Inter', '300'),
         fontSize: 14,
     },
