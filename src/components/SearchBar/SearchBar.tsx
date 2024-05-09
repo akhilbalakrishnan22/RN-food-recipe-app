@@ -15,6 +15,7 @@ const SearchBar = ({ text, onType, onEnter }: SearchBarProp) => {
                 value={text}
                 style={style.textInput}
                 placeholder="Search here . . ."
+                placeholderTextColor={'#6B6B6B'}
                 onChangeText={value => onType(value)}
                 inputMode={'search'}
                 enablesReturnKeyAutomatically={true}
