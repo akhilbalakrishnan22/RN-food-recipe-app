@@ -57,3 +57,11 @@ export interface Meal {
 export interface Location {
     strArea: string;
 }
+
+export interface Ingredient {
+    id: string | null;
+    ingredient: {
+        strIngredient: string | null;
+        strMeasure: string | null;
+    };
+}

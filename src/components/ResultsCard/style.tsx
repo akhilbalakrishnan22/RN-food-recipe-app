@@ -6,9 +6,11 @@ const style = StyleSheet.create({
         height: 126,
         flexDirection: 'row',
         borderColor: '#25AE87',
-        borderWidth: 1,
+        borderBottomWidth: 3,
+        borderRightWidth: 3,
         borderRadius: 15,
         alignItems: 'center',
+        backgroundColor: '#FAFAFA',
     },
     imageContainer: {
         width: 126,
