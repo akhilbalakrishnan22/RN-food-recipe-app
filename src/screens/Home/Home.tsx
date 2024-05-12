@@ -171,6 +171,7 @@ const Home = () => {
                         renderItem={({ item }) => {
                             return (
                                 <FoodCard
+                                    key={item.idMeal}
                                     containerStyle={trendingCardStyle}
                                     recipeItem={item}
                                     onPress={() => {}}

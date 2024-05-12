@@ -26,7 +26,11 @@ const Results = ({ recipes, onPress }: ResultsProp) => {
                     data={recipes}
                     renderItem={({ item }) => {
                         return (
-                            <ResultsCard onPress={onPress} recipeItem={item} />
+                            <ResultsCard
+                                key={item.idMeal}
+                                onPress={onPress}
+                                recipeItem={item}
+                            />
                         );
                     }}
                 />

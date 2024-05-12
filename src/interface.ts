@@ -65,3 +65,10 @@ export interface Ingredient {
         strMeasure: string | null;
     };
 }
+
+export interface Category {
+    idCategory: string | null;
+    strCategory: string | null;
+    strCategoryThumb: string | null;
+    strCategoryDescription: string | null;
+}

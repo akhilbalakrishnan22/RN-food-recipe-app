@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Location, Meal } from '../interface';
+import { Category, Location, Meal } from '../interface';
 
 const base_url = 'https://www.themealdb.com/api/json/v1/1';
 
@@ -52,4 +52,16 @@ export const getItemsByNameAndIngredient = async (
         nameBasedItems: nameBasedResponse.data.meals,
         ingredientBasedItems: ingredientBasedResponse.data.meals,
     };
+};
+
+export const getAllCategories = async (): Promise<Category[]> => {
+    const categoriesList = await axios.get(`${base_url}/categories.php`);
+    return categoriesList.data.categories;
+};
+
+export const getItemsByCategory = async (category: string): Promise<Meal[]> => {
+    const categoryBasedRequest = await axios.get(
+        `${base_url}/filter.php?c=${category}`,
+    );
+    return categoryBasedRequest.data.meals;
 };

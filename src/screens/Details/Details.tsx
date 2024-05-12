@@ -117,7 +117,12 @@ const Details = ({
                 const strIngredient = meal[`strIngredient${i}` as keyof Meal];
                 const strMeasure = meal[`strMeasure${i}` as keyof Meal];
 
-                if (strIngredient?.trim() !== '' && strMeasure?.trim() !== '') {
+                if (
+                    strIngredient?.trim() !== '' &&
+                    strMeasure?.trim() !== '' &&
+                    strIngredient !== null &&
+                    strMeasure !== null
+                ) {
                     ingredientsData.push({
                         id: `${i}`,
                         ingredient: {
@@ -176,7 +181,7 @@ const Details = ({
                     keyExtractor={item => item.id!}
                     data={ingredients}
                     renderItem={({ item }) => {
-                        return <IngredientCard item={item} />;
+                        return <IngredientCard key={item.id} item={item} />;
                     }}
                     ListFooterComponent={
                         <FlatListFooter recipeItem={recipeItem} />
