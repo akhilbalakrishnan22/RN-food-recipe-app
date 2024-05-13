@@ -11,7 +11,7 @@ const Categories = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [categories, setCategories] = useState<Category[]>([]);
     const [errorMsg, setErrorMsg] = useState<boolean>(false);
-    const [activeCategory, setActiveCategory] = useState<string>('false');
+    const [activeCategory, setActiveCategory] = useState<string>('');
     const [activeCategoryRecipes, setActiveCategoryRecipes] = useState<Meal[]>(
         [],
     );
@@ -21,11 +21,13 @@ const Categories = () => {
             try {
                 setLoading(true);
                 const categoriesList = await getAllCategories();
-                setCategories(categoriesList);
                 if (
                     categoriesList !== null &&
+                    categoriesList.length > 0 &&
                     categoriesList[0].strCategory !== null
                 ) {
+                    setCategories(categoriesList);
+                    // Set default active category
                     setActiveCategory(categoriesList[0].strCategory);
                 }
             } catch (error) {

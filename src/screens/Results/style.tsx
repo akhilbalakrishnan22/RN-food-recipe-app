@@ -5,10 +5,10 @@ export const style = StyleSheet.create({
         paddingTop: 20,
     },
     flatlistBottom: {
-        paddingBottom: 750,
+        paddingBottom: 75,
     },
     flatlistBottomAndroid: {
-        paddingBottom: 800,
+        paddingBottom: 80,
     },
 });
 

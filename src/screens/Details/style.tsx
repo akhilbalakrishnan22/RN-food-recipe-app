@@ -35,6 +35,8 @@ const style = StyleSheet.create({
         width: '90%',
     },
     contentDescription: {
+        marginTop: 20,
+        gap: 20,
         width: '100%',
     },
     contentIngredients: {

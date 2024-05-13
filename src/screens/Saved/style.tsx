@@ -4,14 +4,8 @@ const style = StyleSheet.create({
     container: {
         paddingTop: 20,
     },
-    suggestion: {
-        marginTop: 27,
-    },
-    trendingContainer: {
-        marginTop: 32,
-    },
     paddingBottom: {
-        paddingBottom: 50,
+        paddingBottom: 30,
     },
 });
 

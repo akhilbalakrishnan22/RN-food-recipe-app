@@ -1,8 +1,8 @@
-import { View, Text, StatusBar, ImageBackground } from 'react-native';
 import React, { useState } from 'react';
-import style from './style';
+import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button/Button';
+import style from './style';
 
 const OnBoarding = () => {
     const buttonStyle = {

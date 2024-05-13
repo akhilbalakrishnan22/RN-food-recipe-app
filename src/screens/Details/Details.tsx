@@ -26,6 +26,7 @@ const FlatListHeader = ({ recipeItem }: FlatListHeaderProp) => {
     return (
         <View>
             <View style={style.contentDescription}>
+                <Title type={6} text="Instructions:" color="rgba(9,9,9,0.7)" />
                 {recipeItem?.strInstructions && (
                     <Title
                         type={5}
