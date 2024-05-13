@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import globalStyle from '../../../assets/styles/globalStyle';
 import { getAllCategories, getItemsByCategory } from '../../api/api';
 import CategoriesCard from '../../components/CategoriesCard/CategoriesCard';
 import FoodCard from '../../components/FoodCard/FoodCard';
@@ -72,56 +74,60 @@ const Categories = () => {
     };
 
     return (
-        <View style={style.container}>
-            <View>
-                <Title text="Categories" color="#25AE87" />
-                {categories.length > 0 && !errorMsg && (
-                    <FlatList
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        style={style.categoriesContainer}
-                        keyExtractor={item => item.idCategory!}
-                        data={categories}
-                        renderItem={({ item }) => {
-                            return (
-                                <CategoriesCard
-                                    key={item.idCategory}
-                                    activeCategory={activeCategory}
-                                    onPress={category => {
-                                        handleOnpress(category);
-                                    }}
-                                    category={item}
-                                />
-                            );
-                        }}
-                    />
-                )}
-            </View>
+        <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
+            <SafeAreaProvider>
+                <View style={style.container}>
+                    <View>
+                        <Title text="Categories" color="#25AE87" />
+                        {categories.length > 0 && !errorMsg && (
+                            <FlatList
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                                style={style.categoriesContainer}
+                                keyExtractor={item => item.idCategory!}
+                                data={categories}
+                                renderItem={({ item }) => {
+                                    return (
+                                        <CategoriesCard
+                                            key={item.idCategory}
+                                            activeCategory={activeCategory}
+                                            onPress={category => {
+                                                handleOnpress(category);
+                                            }}
+                                            category={item}
+                                        />
+                                    );
+                                }}
+                            />
+                        )}
+                    </View>
 
-            <View style={style.scrollView}>
-                {activeCategoryRecipes !== null && !errorMsg && (
-                    <FlatList
-                        contentContainerStyle={
-                            Platform.OS === 'ios'
-                                ? style.paddingBottom
-                                : style.paddingBottomAndroid
-                        }
-                        numColumns={2}
-                        showsVerticalScrollIndicator={false}
-                        data={activeCategoryRecipes}
-                        renderItem={({ item }) => {
-                            return (
-                                <FoodCard
-                                    containerStyle={categoriesCardStyle}
-                                    onPress={() => {}}
-                                    recipeItem={item}
-                                />
-                            );
-                        }}
-                    />
-                )}
-            </View>
-        </View>
+                    <View style={style.scrollView}>
+                        {activeCategoryRecipes !== null && !errorMsg && (
+                            <FlatList
+                                contentContainerStyle={
+                                    Platform.OS === 'ios'
+                                        ? style.paddingBottom
+                                        : style.paddingBottomAndroid
+                                }
+                                numColumns={2}
+                                showsVerticalScrollIndicator={false}
+                                data={activeCategoryRecipes}
+                                renderItem={({ item }) => {
+                                    return (
+                                        <FoodCard
+                                            containerStyle={categoriesCardStyle}
+                                            onPress={() => {}}
+                                            recipeItem={item}
+                                        />
+                                    );
+                                }}
+                            />
+                        )}
+                    </View>
+                </View>
+            </SafeAreaProvider>
+        </SafeAreaView>
     );
 };
 

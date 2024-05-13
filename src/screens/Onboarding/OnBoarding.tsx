@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button/Button';
@@ -12,7 +13,13 @@ const OnBoarding = () => {
         backgroundColor: '#25AE87',
     };
 
-    const [firstLaunch, setFirstLaunch] = useState<boolean>(false);
+    const setFirstLaunch = async () => {
+        try {
+            await AsyncStorage.setItem('hasOnboarded', JSON.stringify('true'));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <View style={style.container}>
@@ -41,7 +48,7 @@ const OnBoarding = () => {
                 <Button
                     text={'Get Started'}
                     containerStyle={buttonStyle}
-                    onPress={() => {}}
+                    onPress={setFirstLaunch}
                 />
             </View>
         </View>

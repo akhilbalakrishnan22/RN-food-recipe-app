@@ -4,8 +4,8 @@ const globalStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
-    marginHorizontal: {
-        marginHorizontal: 28,
+    backgroundColor: {
+        backgroundColor: 'white',
     },
 });
 

@@ -25,11 +25,7 @@ const CategoriesCard = ({
                         activeCategory === category.strCategory
                             ? {
                                   ...style.imageContainer,
-                                  ...{
-                                      //   borderColor: '#25AE87',
-                                      //   borderWidth: 1,
-                                      backgroundColor: '#25AE87',
-                                  },
+                                  ...{ backgroundColor: '#25AE87' },
                               }
                             : style.imageContainer
                     }>
@@ -41,7 +37,7 @@ const CategoriesCard = ({
                 </View>
             )}
             {category?.strCategory && (
-                <Title type={7} text={category.strCategory} color="black" />
+                <Title type={5} text={category.strCategory} color="black" />
             )}
         </TouchableOpacity>
     );

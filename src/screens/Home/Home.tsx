@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import globalStyle from '../../../assets/styles/globalStyle';
 import {
     getItemById,
     getItemsByLocation,
@@ -141,55 +143,69 @@ const Home = () => {
     };
 
     return (
-        <View style={style.container}>
-            <Title type={1} text={'Discover Best Recipes'} color={'#25AE87'} />
-            <ScrollView
-                contentContainerStyle={style.paddingBottom}
-                showsVerticalScrollIndicator={false}>
-                <SearchBar
-                    text={textInput}
-                    onType={handleSearchInput}
-                    onEnter={handleSearchRequest}
-                />
-                {suggestedMeal?.length > 0 && !errorMsg && (
-                    <View style={style.suggestion}>
-                        <Title type={2} text={'Just For You'} color={'black'} />
-                        <FoodCard
-                            isSuggestion={true}
-                            containerStyle={suggestedCardStyle}
-                            recipeItem={suggestedMeal[0]}
-                            onPress={() => {}}
+        <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
+            <SafeAreaProvider>
+                <View style={style.container}>
+                    <Title
+                        type={1}
+                        text={'Discover Best Recipes'}
+                        color={'#25AE87'}
+                    />
+                    <ScrollView
+                        contentContainerStyle={style.paddingBottom}
+                        showsVerticalScrollIndicator={false}>
+                        <SearchBar
+                            text={textInput}
+                            onType={handleSearchInput}
+                            onEnter={handleSearchRequest}
                         />
-                    </View>
-                )}
+                        {suggestedMeal?.length > 0 && !errorMsg && (
+                            <View style={style.suggestion}>
+                                <Title
+                                    type={2}
+                                    text={'Just For You'}
+                                    color={'black'}
+                                />
+                                <FoodCard
+                                    isSuggestion={true}
+                                    containerStyle={suggestedCardStyle}
+                                    recipeItem={suggestedMeal[0]}
+                                    onPress={() => {}}
+                                />
+                            </View>
+                        )}
 
-                {trendingFoods.length > 0 && !errorMsg && (
-                    <View style={style.trendingContainer}>
-                        <Title
-                            type={2}
-                            text={'Trending Recipes'}
-                            color={'black'}
-                        />
-                        <FlatList
-                            keyExtractor={item => item.idMeal!}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            data={trendingFoods}
-                            renderItem={({ item }) => {
-                                return (
-                                    <FoodCard
-                                        key={item.idMeal}
-                                        containerStyle={trendingCardStyle}
-                                        recipeItem={item}
-                                        onPress={() => {}}
-                                    />
-                                );
-                            }}
-                        />
-                    </View>
-                )}
-            </ScrollView>
-        </View>
+                        {trendingFoods.length > 0 && !errorMsg && (
+                            <View style={style.trendingContainer}>
+                                <Title
+                                    type={2}
+                                    text={'Trending Recipes'}
+                                    color={'black'}
+                                />
+                                <FlatList
+                                    keyExtractor={item => item.idMeal!}
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    data={trendingFoods}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <FoodCard
+                                                key={item.idMeal}
+                                                containerStyle={
+                                                    trendingCardStyle
+                                                }
+                                                recipeItem={item}
+                                                onPress={() => {}}
+                                            />
+                                        );
+                                    }}
+                                />
+                            </View>
+                        )}
+                    </ScrollView>
+                </View>
+            </SafeAreaProvider>
+        </SafeAreaView>
     );
 };
 
