@@ -1,4 +1,5 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import globalStyle from '../../../assets/styles/globalStyle';
@@ -6,12 +7,32 @@ import FoodCard from '../../components/FoodCard/FoodCard';
 import Title from '../../components/Title/Title';
 import { Meal } from '../../interface';
 import style from './style';
+import { useNavigation } from '@react-navigation/native';
+import { AppStackNavigationProp } from '../../navigation/navigationTypes';
+import { AppStackScreens } from '../../navigation/Route';
 
-type SavedProp = {
-    recipes: Meal[];
-};
+const Saved = () => {
+    const navigation = useNavigation<AppStackNavigationProp>();
+    const [savedRecipes, setSavedRecipes] = useState<Meal[]>([]);
 
-const Saved = ({ recipes }: SavedProp) => {
+    useEffect(() => {
+        const fetchSavedMeals = async () => {
+            try {
+                const savedMeals = await AsyncStorage.getItem('meals');
+                if (savedMeals) {
+                    const recipes = JSON.parse(savedMeals);
+                    setSavedRecipes(recipes.reverse());
+                }
+            } catch (error) {
+                console.error(
+                    'Failed to fetch saved meals from storage',
+                    error,
+                );
+            }
+        };
+        fetchSavedMeals();
+    }, [savedRecipes]);
+
     const savedCardStyle = {
         marginTop: 21,
         width: '47%',
@@ -30,11 +51,16 @@ const Saved = ({ recipes }: SavedProp) => {
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item => item.idMeal!}
                         numColumns={2}
-                        data={recipes}
+                        data={savedRecipes}
                         renderItem={({ item }) => {
                             return (
                                 <FoodCard
-                                    onPress={() => {}}
+                                    onPress={() => {
+                                        navigation.navigate(
+                                            AppStackScreens.Details,
+                                            { recipeItem: item },
+                                        );
+                                    }}
                                     containerStyle={savedCardStyle}
                                     key={item.idMeal}
                                     recipeItem={item}

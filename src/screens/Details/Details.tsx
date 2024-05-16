@@ -4,6 +4,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -24,9 +25,13 @@ import style from './style';
 /** FlatList Header **/
 type FlatListHeaderProp = {
     recipeItem: Meal;
+    numberOfIngredients: number;
 };
 
-const FlatListHeader = ({ recipeItem }: FlatListHeaderProp) => {
+const FlatListHeader = ({
+    recipeItem,
+    numberOfIngredients,
+}: FlatListHeaderProp) => {
     return (
         <View>
             <View style={style.contentDescription}>
@@ -43,7 +48,11 @@ const FlatListHeader = ({ recipeItem }: FlatListHeaderProp) => {
             <View style={style.contentIngredients}>
                 <View style={style.ingredientsHeader}>
                     <Title type={2} text={'Ingredients'} color="black" />
-                    <Title type={2} text={'(12)'} color="#25AE87" />
+                    <Title
+                        type={2}
+                        text={`(${numberOfIngredients})`}
+                        color="#25AE87"
+                    />
                 </View>
             </View>
         </View>
@@ -110,6 +119,7 @@ const Details = () => {
 
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [isSaved, setIsSaved] = useState<boolean>(false);
+    const numberOfIngredients = ingredients.length > 0 ? ingredients.length : 0;
 
     const getAllIngredientsAndMeasure = (meal: Meal) => {
         const ingredientsData: Ingredient[] = [];
@@ -141,8 +151,45 @@ const Details = () => {
         setIngredients(getAllIngredientsAndMeasure(recipeItem));
     }, [recipeItem]);
 
-    const handlePress = () => {
-        setIsSaved(!isSaved);
+    useEffect(() => {
+        const checkIfSaved = async () => {
+            try {
+                const existingMeals = await AsyncStorage.getItem('meals');
+                const mealsArray = existingMeals
+                    ? JSON.parse(existingMeals)
+                    : [];
+                const isMealSaved = mealsArray.some(
+                    (savedMeal: Meal) => savedMeal.idMeal === recipeItem.idMeal,
+                );
+                setIsSaved(isMealSaved);
+            } catch (error) {
+                console.error('Error checking if meal is saved:', error);
+            }
+        };
+
+        checkIfSaved();
+    }, [recipeItem.idMeal]);
+
+    const toggleSave = async () => {
+        try {
+            let existingMeals = await AsyncStorage.getItem('meals');
+            let mealsArray = existingMeals ? JSON.parse(existingMeals) : [];
+
+            if (isSaved) {
+                mealsArray = mealsArray.filter(
+                    (savedMeal: Meal) => savedMeal.idMeal !== recipeItem.idMeal,
+                );
+                console.log('Recipe removed successfully');
+            } else {
+                mealsArray.push(recipeItem);
+                console.log('Recipe saved successfully');
+            }
+
+            await AsyncStorage.setItem('meals', JSON.stringify(mealsArray));
+            setIsSaved(!isSaved);
+        } catch (error) {
+            console.error('Error toggling save state:', error);
+        }
     };
 
     return (
@@ -170,7 +217,7 @@ const Details = () => {
                             />
                         )}
                     </View>
-                    <Pressable onPress={handlePress}>
+                    <Pressable onPress={toggleSave}>
                         <FontAwesomeIcon
                             icon={isSaved ? faBookmarkSolid : icon}
                             size={size}
@@ -181,7 +228,10 @@ const Details = () => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={
-                        <FlatListHeader recipeItem={recipeItem} />
+                        <FlatListHeader
+                            recipeItem={recipeItem}
+                            numberOfIngredients={numberOfIngredients}
+                        />
                     }
                     keyExtractor={item => item.id!}
                     data={ingredients}

@@ -1,14 +1,17 @@
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import { TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 import style from './style';
 
 type SearchBarProp = {
     text: string;
     onType: (query: string) => void;
     onEnter: () => void;
+    onSearch: () => void;
 };
 
-const SearchBar = ({ text, onType, onEnter }: SearchBarProp) => {
+const SearchBar = ({ text, onType, onEnter, onSearch }: SearchBarProp) => {
     return (
         <View style={style.searchContainer}>
             <TextInput
@@ -21,6 +24,9 @@ const SearchBar = ({ text, onType, onEnter }: SearchBarProp) => {
                 enablesReturnKeyAutomatically={true}
                 onSubmitEditing={onEnter}
             />
+            <Pressable style={style.searchIcon} onPress={onSearch}>
+                <FontAwesomeIcon icon={faSearch} size={22} color="#B8B8B8" />
+            </Pressable>
         </View>
     );
 };
