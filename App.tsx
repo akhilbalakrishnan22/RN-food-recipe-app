@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import BottomNavigation from './src/navigation/BottomNavigation';
 import OnboardingNavigation from './src/navigation/OnboardingNavigation';
+import AppStackNavigation from './src/navigation/StackNavigation';
 
 const App = () => {
     const [hasOnboarded, setHasOnboarded] = useState(false);
@@ -18,7 +18,7 @@ const App = () => {
 
     return (
         <NavigationContainer>
-            {hasOnboarded ? <BottomNavigation /> : <OnboardingNavigation />}
+            {hasOnboarded ? <AppStackNavigation /> : <OnboardingNavigation />}
         </NavigationContainer>
     );
 };

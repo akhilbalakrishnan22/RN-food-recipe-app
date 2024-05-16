@@ -1,11 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button/Button';
+import { OnboardingScreens } from '../../navigation/Route';
+import { OnboardingNavigationProp } from '../../navigation/navigationTypes';
 import style from './style';
 
 const OnBoarding = () => {
+    const navigation = useNavigation<OnboardingNavigationProp>();
+
     const buttonStyle = {
         marginTop: 69,
         paddingVertical: 18,
@@ -16,6 +21,7 @@ const OnBoarding = () => {
     const setFirstLaunch = async () => {
         try {
             await AsyncStorage.setItem('hasOnboarded', JSON.stringify('true'));
+            navigation.replace(OnboardingScreens.AppEntry);
         } catch (error) {
             console.log(error);
         }

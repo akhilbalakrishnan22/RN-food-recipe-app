@@ -1,15 +1,24 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import globalStyle from '../../../assets/styles/globalStyle';
-import { getAllCategories, getItemsByCategory } from '../../api/api';
+import {
+    getAllCategories,
+    getItemById,
+    getItemsByCategory,
+} from '../../api/api';
 import CategoriesCard from '../../components/CategoriesCard/CategoriesCard';
 import FoodCard from '../../components/FoodCard/FoodCard';
 import Title from '../../components/Title/Title';
 import { Category, Meal } from '../../interface';
+import { AppStackScreens } from '../../navigation/Route';
+import { AppStackNavigationProp } from '../../navigation/navigationTypes';
 import style from './style';
 
 const Categories = () => {
+    const navigation = useNavigation<AppStackNavigationProp>();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [categories, setCategories] = useState<Category[]>([]);
     const [errorMsg, setErrorMsg] = useState<boolean>(false);
@@ -62,6 +71,17 @@ const Categories = () => {
 
     const handleOnpress = (item: Category) => {
         item?.strCategory ? setActiveCategory(item.strCategory) : '';
+    };
+
+    const navigateToDetails = async (item: Meal) => {
+        if (item.idMeal !== null) {
+            const meal: Meal[] = await getItemById(parseInt(item.idMeal, 10));
+            if (meal !== null && meal !== undefined) {
+                navigation.navigate(AppStackScreens.Details, {
+                    recipeItem: meal[0],
+                });
+            }
+        }
     };
 
     const categoriesCardStyle = {
@@ -117,7 +137,9 @@ const Categories = () => {
                                     return (
                                         <FoodCard
                                             containerStyle={categoriesCardStyle}
-                                            onPress={() => {}}
+                                            onPress={() =>
+                                                navigateToDetails(item)
+                                            }
                                             recipeItem={item}
                                         />
                                     );

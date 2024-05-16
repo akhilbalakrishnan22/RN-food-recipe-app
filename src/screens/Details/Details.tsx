@@ -2,7 +2,9 @@ import {
     IconDefinition,
     faBookmark,
 } from '@fortawesome/free-regular-svg-icons';
+import { faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
     Alert,
@@ -15,6 +17,8 @@ import YouTubePlayer from 'react-native-youtube-iframe';
 import IngredientCard from '../../components/IngredientCard/IngredientCard';
 import Title from '../../components/Title/Title';
 import { Ingredient, Meal } from '../../interface';
+import { AppStackScreens } from '../../navigation/Route';
+import { AppStackRouteProp } from '../../navigation/navigationTypes';
 import style from './style';
 
 /** FlatList Header **/
@@ -62,7 +66,6 @@ const FlatListFooter = ({ recipeItem }: FlatListFooterProp) => {
     const [playing, setPlaying] = useState<boolean>(false);
 
     const onStateChange = useCallback((state: string) => {
-        console.log(state);
         if (state === 'ended') {
             setPlaying(false);
             Alert.alert('Video finished');
@@ -95,21 +98,18 @@ const FlatListFooter = ({ recipeItem }: FlatListFooterProp) => {
 };
 
 /** Details **/
-type DetailsProp = {
+export type DetailsProp = {
     recipeItem: Meal;
-    onPress: () => void;
     icon?: IconDefinition;
     size?: number;
 };
 
-const Details = ({
-    recipeItem,
-    onPress,
-    icon = faBookmark,
-    size = 24,
-}: DetailsProp) => {
+const Details = () => {
+    const route = useRoute<AppStackRouteProp<AppStackScreens.Details>>();
+    const { recipeItem, icon = faBookmark, size = 24 } = route.params;
+
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [saved, setSaved] = useState<boolean>(false);
+    const [isSaved, setIsSaved] = useState<boolean>(false);
 
     const getAllIngredientsAndMeasure = (meal: Meal) => {
         const ingredientsData: Ingredient[] = [];
@@ -141,6 +141,10 @@ const Details = ({
         setIngredients(getAllIngredientsAndMeasure(recipeItem));
     }, [recipeItem]);
 
+    const handlePress = () => {
+        setIsSaved(!isSaved);
+    };
+
     return (
         <View style={style.container}>
             <View style={style.imageContainer}>
@@ -166,9 +170,9 @@ const Details = ({
                             />
                         )}
                     </View>
-                    <Pressable onPress={onPress}>
+                    <Pressable onPress={handlePress}>
                         <FontAwesomeIcon
-                            icon={icon}
+                            icon={isSaved ? faBookmarkSolid : icon}
                             size={size}
                             color="#25AE87"
                         />

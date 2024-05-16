@@ -1,9 +1,16 @@
-export const Routes = {
-    Onboarding: 'Onboarding',
-    HomeWithTab: 'HomeWithTab',
-    Home: 'Home',
-    Categories: 'Categories',
-    Saved: 'Saved',
-    Details: 'Details',
-    SearchResults: 'SearchResults',
-};
+export enum OnboardingScreens {
+    OnBoarding = 'Onboarding',
+    AppEntry = 'AppEntry',
+}
+
+export enum AppStackScreens {
+    BottomTabs = 'BottomTabs',
+    Details = 'Details',
+    SearchResults = 'SearchResults',
+}
+
+export enum BottomTabScreens {
+    Home = 'Home',
+    Categories = 'Categories',
+    Saved = 'Saved',
+}

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -12,9 +13,13 @@ import FoodCard from '../../components/FoodCard/FoodCard';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Title from '../../components/Title/Title';
 import { Location, Meal } from '../../interface';
+import { AppStackScreens } from '../../navigation/Route';
+import { AppStackNavigationProp } from '../../navigation/navigationTypes';
 import style from './style';
 
 const Home = () => {
+    const navigation = useNavigation<AppStackNavigationProp>();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [suggestedMeal, setSuggestedMeal] = useState<Meal[]>([]);
     const [locations, setLocations] = useState<Location[]>([]);
@@ -62,6 +67,17 @@ const Home = () => {
                         const uniqueItems: Meal[] =
                             Object.values(uniqueItemsMap);
                         setSearchResults(uniqueItems);
+
+                        if (
+                            searchResults !== null &&
+                            searchResults.length > 0 &&
+                            searchResults !== undefined
+                        ) {
+                            console.log(searchResults);
+                            navigation.navigate(AppStackScreens.SearchResults, {
+                                recipes: searchResults,
+                            });
+                        }
                     }
                 }
             } catch (error) {
@@ -170,7 +186,12 @@ const Home = () => {
                                     isSuggestion={true}
                                     containerStyle={suggestedCardStyle}
                                     recipeItem={suggestedMeal[0]}
-                                    onPress={() => {}}
+                                    onPress={() => {
+                                        navigation.navigate(
+                                            AppStackScreens.Details,
+                                            { recipeItem: suggestedMeal[0] },
+                                        );
+                                    }}
                                 />
                             </View>
                         )}
@@ -195,7 +216,12 @@ const Home = () => {
                                                     trendingCardStyle
                                                 }
                                                 recipeItem={item}
-                                                onPress={() => {}}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        AppStackScreens.Details,
+                                                        { recipeItem: item },
+                                                    );
+                                                }}
                                             />
                                         );
                                     }}
