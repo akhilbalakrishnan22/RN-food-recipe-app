@@ -179,10 +179,8 @@ const Details = () => {
                 mealsArray = mealsArray.filter(
                     (savedMeal: Meal) => savedMeal.idMeal !== recipeItem.idMeal,
                 );
-                console.log('Recipe removed successfully');
             } else {
                 mealsArray.push(recipeItem);
-                console.log('Recipe saved successfully');
             }
 
             await AsyncStorage.setItem('meals', JSON.stringify(mealsArray));

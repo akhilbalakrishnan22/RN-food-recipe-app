@@ -1,37 +1,37 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import globalStyle from '../../../assets/styles/globalStyle';
 import FoodCard from '../../components/FoodCard/FoodCard';
 import Title from '../../components/Title/Title';
 import { Meal } from '../../interface';
-import style from './style';
-import { useNavigation } from '@react-navigation/native';
-import { AppStackNavigationProp } from '../../navigation/navigationTypes';
 import { AppStackScreens } from '../../navigation/Route';
+import { AppStackNavigationProp } from '../../navigation/navigationTypes';
+import style from './style';
 
 const Saved = () => {
     const navigation = useNavigation<AppStackNavigationProp>();
     const [savedRecipes, setSavedRecipes] = useState<Meal[]>([]);
 
-    useEffect(() => {
-        const fetchSavedMeals = async () => {
-            try {
-                const savedMeals = await AsyncStorage.getItem('meals');
-                if (savedMeals) {
-                    const recipes = JSON.parse(savedMeals);
-                    setSavedRecipes(recipes.reverse());
-                }
-            } catch (error) {
-                console.error(
-                    'Failed to fetch saved meals from storage',
-                    error,
-                );
+    const fetchSavedMeals = async () => {
+        try {
+            const savedMeals = await AsyncStorage.getItem('meals');
+            if (savedMeals) {
+                const recipes = JSON.parse(savedMeals);
+                setSavedRecipes(recipes.reverse());
             }
-        };
-        fetchSavedMeals();
-    }, [savedRecipes]);
+        } catch (error) {
+            console.error('Failed to fetch saved meals from storage', error);
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchSavedMeals();
+        }, []),
+    );
 
     const savedCardStyle = {
         marginTop: 21,

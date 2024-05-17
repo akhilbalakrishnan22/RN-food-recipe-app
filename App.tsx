@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import RNBootSplash from 'react-native-bootsplash';
 import OnboardingNavigation from './src/navigation/OnboardingNavigation';
 import AppStackNavigation from './src/navigation/StackNavigation';
 
@@ -17,7 +18,7 @@ const App = () => {
     }, []);
 
     return (
-        <NavigationContainer>
+        <NavigationContainer onReady={() => RNBootSplash.hide()}>
             {hasOnboarded ? <AppStackNavigation /> : <OnboardingNavigation />}
         </NavigationContainer>
     );
