@@ -6,7 +6,7 @@ import globalStyle from '../../../assets/styles/globalStyle';
 import {
     getItemById,
     getItemsByLocation,
-    getItemsByNameAndIngredient,
+    getItemsByName,
     getSuggestedItemAndArea,
 } from '../../api/api';
 import FoodCard from '../../components/FoodCard/FoodCard';
@@ -27,6 +27,7 @@ const Home = () => {
     const [trendingFoods, setTrendingFoods] = useState<Meal[]>([]);
     const [textInput, setTextInput] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Meal[]>([]);
+    const [isReadyToNavigate, setIsReadyToNavigate] = useState<boolean>(false);
 
     const handleSearchInput = (query: string) => {
         setTextInput(query);
@@ -38,57 +39,35 @@ const Home = () => {
             try {
                 if (query.length > 0) {
                     setLoading(true);
-                    const { nameBasedItems, ingredientBasedItems } =
-                        await getItemsByNameAndIngredient(query);
+                    const nameBasedItems = await getItemsByName(query);
                     setTextInput('');
-                    if (
-                        nameBasedItems === null &&
-                        ingredientBasedItems.length > 0
-                    ) {
-                        setSearchResults(ingredientBasedItems);
-                    } else if (
-                        ingredientBasedItems === null &&
-                        nameBasedItems.length > 0
-                    ) {
-                        setSearchResults(nameBasedItems);
-                    } else {
-                        const mergedItems: Meal[] = [
-                            ...nameBasedItems,
-                            ...ingredientBasedItems,
-                        ];
-
-                        const uniqueItemsMap: { [key: string]: Meal } = {};
-                        // Filter out duplicates using a lookup table
-                        for (const meal of mergedItems) {
-                            if (meal.idMeal != null) {
-                                uniqueItemsMap[meal.idMeal] = meal;
-                            }
-                        }
-                        const uniqueItems: Meal[] =
-                            Object.values(uniqueItemsMap);
-                        setSearchResults(uniqueItems);
-
-                        if (
-                            searchResults !== null &&
-                            searchResults.length > 0 &&
-                            searchResults !== undefined
-                        ) {
-                            console.log(searchResults);
-                            navigation.navigate(AppStackScreens.SearchResults, {
-                                recipes: searchResults,
-                            });
-                        }
-                    }
+                    setSearchResults(nameBasedItems);
+                    setIsReadyToNavigate(true);
                 }
             } catch (error) {
                 console.log('Error: ', error);
                 setErrorMsg(true);
+                setIsReadyToNavigate(false);
             } finally {
                 setLoading(false);
             }
         };
         searchItemByNameAndIngredient(textInput);
     };
+
+    // Checks wether it is ready to navigate or not.
+    useEffect(() => {
+        if (
+            searchResults !== null &&
+            searchResults.length > 0 &&
+            isReadyToNavigate
+        ) {
+            navigation.navigate(AppStackScreens.SearchResults, {
+                recipes: searchResults,
+            });
+            setIsReadyToNavigate(false);
+        }
+    }, [isReadyToNavigate, searchResults, navigation]);
 
     // API call for JustForYou section and location list.
     useEffect(() => {
@@ -162,11 +141,14 @@ const Home = () => {
         <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
             <SafeAreaProvider>
                 <View style={style.container}>
-                    <Title
-                        type={1}
-                        text={'Discover Best Recipes'}
-                        color={'#25AE87'}
-                    />
+                    <View style={style.titleContainer}>
+                        <Title type={1} text={'Chef4U'} color={'#25AE87'} />
+                        <Title
+                            type={2}
+                            text={'Discover Best Recipes'}
+                            color={'#AEAEAE'}
+                        />
+                    </View>
                     <ScrollView
                         contentContainerStyle={style.paddingBottom}
                         showsVerticalScrollIndicator={false}>
@@ -174,6 +156,7 @@ const Home = () => {
                             text={textInput}
                             onType={handleSearchInput}
                             onEnter={handleSearchRequest}
+                            onSearch={handleSearchRequest}
                         />
                         {suggestedMeal?.length > 0 && !errorMsg && (
                             <View style={style.suggestion}>

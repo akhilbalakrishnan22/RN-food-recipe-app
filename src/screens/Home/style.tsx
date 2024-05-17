@@ -5,11 +5,14 @@ const style = StyleSheet.create({
         paddingTop: 20,
         paddingHorizontal: 28,
     },
+    titleContainer: {
+        gap: 5,
+    },
     suggestion: {
-        marginTop: 27,
+        marginTop: 37,
     },
     trendingContainer: {
-        marginTop: 32,
+        marginTop: 37,
     },
     paddingBottom: {
         paddingBottom: 50,
