@@ -7,6 +7,11 @@ const globalStyle = StyleSheet.create({
     backgroundColor: {
         backgroundColor: 'white',
     },
+    loadingIndicator: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default globalStyle;
