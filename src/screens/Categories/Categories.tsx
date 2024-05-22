@@ -70,6 +70,7 @@ const Categories = () => {
     }, [categories, activeCategory]);
 
     const handleOnpress = (item: Category) => {
+        setActiveCategoryRecipes([]);
         item?.strCategory ? setActiveCategory(item.strCategory) : '';
     };
 
