@@ -19,7 +19,9 @@ import style from './style';
 const Categories = () => {
     const navigation = useNavigation<AppStackNavigationProp>();
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [recipesLoading, setRecipesLoading] = useState<boolean>(true);
+
     const [categories, setCategories] = useState<Category[]>([]);
     const [errorMsg, setErrorMsg] = useState<boolean>(false);
     const [activeCategory, setActiveCategory] = useState<string>('');
@@ -54,7 +56,7 @@ const Categories = () => {
     useEffect(() => {
         const setCategoryItems = async () => {
             try {
-                setLoading(true);
+                setRecipesLoading(true);
                 if (categories !== null) {
                     const recipes = await getItemsByCategory(activeCategory);
                     setActiveCategoryRecipes(recipes);
@@ -63,7 +65,7 @@ const Categories = () => {
                 console.log(error);
                 setErrorMsg(true);
             } finally {
-                setLoading(false);
+                setRecipesLoading(false);
             }
         };
         setCategoryItems();
@@ -90,7 +92,6 @@ const Categories = () => {
         width: '47%',
         height: 200,
         marginRight: '5%',
-        backgroundColor: 'lightgray',
         borderRadius: 25,
     };
 
@@ -110,6 +111,7 @@ const Categories = () => {
                                 renderItem={({ item }) => {
                                     return (
                                         <CategoriesCard
+                                            isLoading={loading}
                                             key={item.idCategory}
                                             activeCategory={activeCategory}
                                             onPress={category => {
@@ -137,6 +139,7 @@ const Categories = () => {
                                 renderItem={({ item }) => {
                                     return (
                                         <FoodCard
+                                            isLoading={recipesLoading}
                                             containerStyle={categoriesCardStyle}
                                             onPress={() =>
                                                 navigateToDetails(item)

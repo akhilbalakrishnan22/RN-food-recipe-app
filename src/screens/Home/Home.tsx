@@ -20,7 +20,10 @@ import style from './style';
 const Home = () => {
     const navigation = useNavigation<AppStackNavigationProp>();
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [suggestedLoading, setSuggestedLoading] = useState<boolean>(true);
+    const [trendingLoading, setTrendingLoading] = useState<boolean>(true);
+
     const [suggestedMeal, setSuggestedMeal] = useState<Meal[]>([]);
     const [locations, setLocations] = useState<Location[]>([]);
     const [errorMsg, setErrorMsg] = useState<boolean>(false);
@@ -73,7 +76,8 @@ const Home = () => {
     useEffect(() => {
         const getSuggestedMeal = async () => {
             try {
-                setLoading(true);
+                setSuggestedLoading(true);
+                setSuggestedMeal([]);
                 const { suggestedItem, areaList } =
                     await getSuggestedItemAndArea();
                 setSuggestedMeal(suggestedItem);
@@ -82,7 +86,7 @@ const Home = () => {
                 console.log(error);
                 setErrorMsg(true);
             } finally {
-                setLoading(false);
+                setSuggestedLoading(false);
             }
         };
         getSuggestedMeal();
@@ -96,7 +100,8 @@ const Home = () => {
         );
         const getTrending = async (location: string) => {
             try {
-                setLoading(true);
+                setTrendingLoading(true);
+                setTrendingFoods([]);
                 const trending: Meal[] = await getItemsByLocation(location);
                 trending?.forEach(async item => {
                     if (typeof item?.idMeal === 'string' && item.idMeal) {
@@ -115,7 +120,7 @@ const Home = () => {
                 console.log(error);
                 setErrorMsg(true);
             } finally {
-                setLoading(false);
+                setTrendingLoading(false);
             }
         };
         getTrending(locationArray[randomLocation]);
@@ -126,7 +131,6 @@ const Home = () => {
         marginRight: 31,
         width: 205,
         height: 250,
-        backgroundColor: 'lightgray',
         borderRadius: 15,
     };
 
@@ -134,7 +138,6 @@ const Home = () => {
         marginTop: 19,
         height: 153,
         borderRadius: 15,
-        backgroundColor: 'lightgray',
     };
 
     return (
@@ -166,6 +169,7 @@ const Home = () => {
                                     color={'black'}
                                 />
                                 <FoodCard
+                                    isLoading={suggestedLoading}
                                     isSuggestion={true}
                                     containerStyle={suggestedCardStyle}
                                     recipeItem={suggestedMeal[0]}
@@ -194,6 +198,7 @@ const Home = () => {
                                     renderItem={({ item }) => {
                                         return (
                                             <FoodCard
+                                                isLoading={trendingLoading}
                                                 key={item.idMeal}
                                                 containerStyle={
                                                     trendingCardStyle

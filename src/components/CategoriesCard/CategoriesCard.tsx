@@ -1,5 +1,7 @@
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
 import { Category } from '../../interface';
 import Title from '../Title/Title';
 import style from './style';
@@ -8,12 +10,14 @@ type CategoriesCardProp = {
     category: Category;
     activeCategory?: string;
     onPress: (item: Category) => void;
+    isLoading: boolean;
 };
 
 const CategoriesCard = ({
     category,
     activeCategory,
     onPress,
+    isLoading,
 }: CategoriesCardProp) => {
     return (
         <TouchableOpacity
@@ -29,11 +33,16 @@ const CategoriesCard = ({
                               }
                             : style.imageContainer
                     }>
-                    <Image
+                    <ShimmerPlaceholder
                         style={style.image}
-                        resizeMode={'cover'}
-                        source={{ uri: category.strCategoryThumb }}
-                    />
+                        visible={!isLoading}
+                        LinearGradient={LinearGradient}>
+                        <Image
+                            style={style.image}
+                            resizeMode={'cover'}
+                            source={{ uri: category.strCategoryThumb }}
+                        />
+                    </ShimmerPlaceholder>
                 </View>
             )}
             {category?.strCategory && (

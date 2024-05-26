@@ -1,6 +1,8 @@
 import { BlurView } from '@react-native-community/blur';
 import React from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
 import { Meal } from '../../interface';
 import Title from '../Title/Title';
 import style from './style';
@@ -102,6 +104,7 @@ type FoodCardProp = {
     recipeItem: Meal;
     onPress: () => void;
     isSuggestion?: boolean;
+    isLoading: boolean;
 };
 
 const FoodCard = ({
@@ -109,21 +112,30 @@ const FoodCard = ({
     recipeItem,
     onPress,
     isSuggestion = false,
+    isLoading,
 }: FoodCardProp) => {
     return (
         <TouchableOpacity onPress={onPress} style={containerStyle}>
-            {recipeItem.strMealThumb ? (
-                <Image
-                    resizeMode={'cover'}
-                    style={{
-                        ...style.image,
-                        borderRadius: containerStyle.borderRadius,
-                    }}
-                    source={{ uri: recipeItem.strMealThumb }}
-                />
-            ) : (
-                <></>
-            )}
+            <ShimmerPlaceholder
+                style={{
+                    ...style.image,
+                    borderRadius: containerStyle.borderRadius,
+                }}
+                visible={!isLoading}
+                LinearGradient={LinearGradient}>
+                {recipeItem.strMealThumb ? (
+                    <Image
+                        resizeMode={'cover'}
+                        style={{
+                            ...style.image,
+                            borderRadius: containerStyle.borderRadius,
+                        }}
+                        source={{ uri: recipeItem.strMealThumb }}
+                    />
+                ) : (
+                    <></>
+                )}
+            </ShimmerPlaceholder>
             <CardInfo recipeItem={recipeItem} isSuggestion={isSuggestion} />
         </TouchableOpacity>
     );

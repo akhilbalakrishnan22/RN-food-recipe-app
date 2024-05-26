@@ -14,9 +14,11 @@ import style from './style';
 const Saved = () => {
     const navigation = useNavigation<AppStackNavigationProp>();
     const [savedRecipes, setSavedRecipes] = useState<Meal[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const fetchSavedMeals = async () => {
         try {
+            setLoading(true);
             const savedMeals = await AsyncStorage.getItem('meals');
             if (savedMeals) {
                 const recipes = JSON.parse(savedMeals);
@@ -24,6 +26,8 @@ const Saved = () => {
             }
         } catch (error) {
             console.error('Failed to fetch saved meals from storage', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -38,7 +42,6 @@ const Saved = () => {
         width: '47%',
         height: 200,
         marginRight: '5%',
-        backgroundColor: 'lightgray',
         borderRadius: 25,
     };
     return (
@@ -55,6 +58,7 @@ const Saved = () => {
                         renderItem={({ item }) => {
                             return (
                                 <FoodCard
+                                    isLoading={loading}
                                     onPress={() => {
                                         navigation.navigate(
                                             AppStackScreens.Details,
