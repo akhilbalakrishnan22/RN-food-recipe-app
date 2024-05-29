@@ -1,7 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+    DarkTheme,
+    DefaultTheme,
+    NavigationContainer,
+} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, useColorScheme } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import globalStyle from './assets/styles/globalStyle';
 import OnboardingNavigation from './src/navigation/OnboardingNavigation';
@@ -10,6 +14,7 @@ import AppStackNavigation from './src/navigation/StackNavigation';
 const App = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [hasOnboarded, setHasOnboarded] = useState<boolean | null>(null);
+    const scheme = useColorScheme();
 
     useEffect(() => {
         const retrieveOnboardingStatus = async () => {
@@ -35,7 +40,9 @@ const App = () => {
         );
     }
     return (
-        <NavigationContainer onReady={() => RNBootSplash.hide()}>
+        <NavigationContainer
+            theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
+            onReady={() => RNBootSplash.hide()}>
             {hasOnboarded ? <AppStackNavigation /> : <OnboardingNavigation />}
         </NavigationContainer>
     );

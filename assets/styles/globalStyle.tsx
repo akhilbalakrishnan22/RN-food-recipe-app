@@ -4,9 +4,6 @@ const globalStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
-    backgroundColor: {
-        backgroundColor: 'white',
-    },
     loadingIndicator: {
         flex: 1,
         justifyContent: 'center',

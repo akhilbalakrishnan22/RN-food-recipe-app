@@ -34,7 +34,7 @@ const BottomNavigation = () => {
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarActiveTintColor: '#25AE87',
-                tabBarInactiveTintColor: 'rgba(9,9,9,0.3)',
+                tabBarInactiveTintColor: '#AEAEAE',
                 tabBarStyle: {
                     borderTopWidth: 0,
                 },

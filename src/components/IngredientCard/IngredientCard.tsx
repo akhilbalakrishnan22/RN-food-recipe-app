@@ -1,3 +1,4 @@
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { Platform, View } from 'react-native';
 import { Ingredient } from '../../interface';
@@ -41,20 +42,27 @@ const IngredientCard = ({ item }: IngredientCardProp) => {
         4,
         '#rgba(0,0,0,0.5)',
     );
+
+    const { colors } = useTheme();
     return (
-        <View style={[style.container, shadowProp]}>
+        <View
+            style={{
+                ...style.container,
+                backgroundColor: colors.background,
+                ...shadowProp,
+            }}>
             {item.ingredient.strIngredient && (
                 <Title
                     type={6}
                     text={item.ingredient.strIngredient}
-                    color="black"
+                    color={colors.text}
                 />
             )}
             {item.ingredient.strMeasure && (
                 <Title
                     type={6}
                     text={item.ingredient.strMeasure}
-                    color="black"
+                    color={colors.text}
                 />
             )}
         </View>

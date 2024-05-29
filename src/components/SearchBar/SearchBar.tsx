@@ -1,5 +1,6 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import style from './style';
@@ -12,13 +13,18 @@ type SearchBarProp = {
 };
 
 const SearchBar = ({ text, onType, onEnter, onSearch }: SearchBarProp) => {
+    const { colors } = useTheme();
     return (
-        <View style={style.searchContainer}>
+        <View
+            style={{
+                ...style.searchContainer,
+                backgroundColor: colors.background,
+            }}>
             <TextInput
                 value={text}
-                style={style.textInput}
+                style={{ ...style.textInput, color: colors.text }}
                 placeholder="Search here . . ."
-                placeholderTextColor={'#6B6B6B'}
+                placeholderTextColor={colors.text}
                 onChangeText={value => onType(value)}
                 inputMode={'search'}
                 enablesReturnKeyAutomatically={true}

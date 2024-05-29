@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import React from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -27,8 +27,11 @@ const Results = () => {
         navigation.navigate(AppStackScreens.Details, { recipeItem: item });
     };
 
+    const { colors } = useTheme();
+
     return (
-        <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
+        <SafeAreaView
+            style={{ ...globalStyle.flex, backgroundColor: colors.card }}>
             <SafeAreaProvider>
                 <View style={style.container}>
                     <Title text={'Search Results'} color="#25AE87" />

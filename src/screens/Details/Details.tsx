@@ -5,7 +5,7 @@ import {
 import { faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useTheme } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
     Alert,
@@ -32,22 +32,23 @@ const FlatListHeader = ({
     recipeItem,
     numberOfIngredients,
 }: FlatListHeaderProp) => {
+    const { colors } = useTheme();
     return (
         <View>
             <View style={style.contentDescription}>
-                <Title type={6} text="Instructions:" color="rgba(9,9,9,0.7)" />
+                <Title type={6} text="Instructions:" color={colors.text} />
                 {recipeItem?.strInstructions && (
                     <Title
                         type={5}
                         numberOfLines={0}
                         text={recipeItem.strInstructions}
-                        color="rgba(9,9,9,0.7)"
+                        color={colors.text}
                     />
                 )}
             </View>
             <View style={style.contentIngredients}>
                 <View style={style.ingredientsHeader}>
-                    <Title type={2} text={'Ingredients'} color="black" />
+                    <Title type={2} text={'Ingredients'} color={colors.text} />
                     <Title
                         type={2}
                         text={`(${numberOfIngredients})`}
@@ -81,12 +82,13 @@ const FlatListFooter = ({ recipeItem }: FlatListFooterProp) => {
         }
     }, []);
 
+    const { colors } = useTheme();
     return (
         <View>
             {recipeItem.strYoutube ? (
                 <View style={style.videoContainer}>
                     <View style={style.videoContainerTitle}>
-                        <Title type={2} text="YouTube" color="black" />
+                        <Title type={2} text="YouTube" color={colors.text} />
                     </View>
                     <YouTubePlayer
                         height={300}
@@ -190,6 +192,8 @@ const Details = () => {
         }
     };
 
+    const { colors } = useTheme();
+
     return (
         <View style={style.container}>
             <View style={style.imageContainer}>
@@ -203,7 +207,11 @@ const Details = () => {
                     <></>
                 )}
             </View>
-            <View style={style.contentContainer}>
+            <View
+                style={{
+                    ...style.contentContainer,
+                    backgroundColor: colors.card,
+                }}>
                 <View style={style.contentHeader}>
                     <View style={style.title}>
                         {recipeItem?.strMeal && (
@@ -211,7 +219,7 @@ const Details = () => {
                                 type={2}
                                 numberOfLines={3}
                                 text={recipeItem.strMeal}
-                                color="black"
+                                color={colors.text}
                             />
                         )}
                     </View>

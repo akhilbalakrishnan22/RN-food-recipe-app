@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -95,8 +95,11 @@ const Categories = () => {
         borderRadius: 25,
     };
 
+    const { colors } = useTheme();
+
     return (
-        <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
+        <SafeAreaView
+            style={{ ...globalStyle.flex, backgroundColor: colors.card }}>
             <SafeAreaProvider>
                 <View style={style.container}>
                     <View>

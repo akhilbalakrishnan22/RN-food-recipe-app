@@ -9,7 +9,6 @@ const style = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 19,
         paddingHorizontal: 18,
-        backgroundColor: '#FBFBFB',
     },
 });
 

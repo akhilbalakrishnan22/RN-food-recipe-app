@@ -10,7 +10,6 @@ const style = StyleSheet.create({
         borderRightWidth: 3,
         borderRadius: 15,
         alignItems: 'center',
-        backgroundColor: '#FAFAFA',
     },
     imageContainer: {
         width: 126,

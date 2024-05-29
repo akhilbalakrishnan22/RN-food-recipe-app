@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -140,8 +140,11 @@ const Home = () => {
         borderRadius: 15,
     };
 
+    const { colors } = useTheme();
+
     return (
-        <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
+        <SafeAreaView
+            style={{ ...globalStyle.flex, backgroundColor: colors.card }}>
             <SafeAreaProvider>
                 <View style={style.container}>
                     <View style={style.titleContainer}>
@@ -166,7 +169,7 @@ const Home = () => {
                                 <Title
                                     type={2}
                                     text={'Just For You'}
-                                    color={'black'}
+                                    color={colors.text}
                                 />
                                 <FoodCard
                                     isLoading={suggestedLoading}
@@ -188,7 +191,7 @@ const Home = () => {
                                 <Title
                                     type={2}
                                     text={'Trending Recipes'}
-                                    color={'black'}
+                                    color={colors.text}
                                 />
                                 <FlatList
                                     keyExtractor={item => item.idMeal!}

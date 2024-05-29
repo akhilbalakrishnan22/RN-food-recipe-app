@@ -1,5 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+    useFocusEffect,
+    useNavigation,
+    useTheme,
+} from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -44,8 +48,12 @@ const Saved = () => {
         marginRight: '5%',
         borderRadius: 25,
     };
+
+    const { colors } = useTheme();
+
     return (
-        <SafeAreaView style={[globalStyle.flex, globalStyle.backgroundColor]}>
+        <SafeAreaView
+            style={{ ...globalStyle.flex, backgroundColor: colors.card }}>
             <SafeAreaProvider>
                 <View style={style.container}>
                     <Title text="Saved Recipes" color="#25AE87" />

@@ -1,3 +1,4 @@
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,6 +20,7 @@ const CategoriesCard = ({
     onPress,
     isLoading,
 }: CategoriesCardProp) => {
+    const { colors } = useTheme();
     return (
         <TouchableOpacity
             style={style.container}
@@ -29,9 +31,18 @@ const CategoriesCard = ({
                         activeCategory === category.strCategory
                             ? {
                                   ...style.imageContainer,
-                                  ...{ backgroundColor: '#25AE87' },
+                                  ...{
+                                      backgroundColor: '#25AE87',
+                                      borderColor: colors.border,
+                                  },
                               }
-                            : style.imageContainer
+                            : {
+                                  ...style.imageContainer,
+                                  ...{
+                                      backgroundColor: colors.card,
+                                      borderColor: colors.border,
+                                  },
+                              }
                     }>
                     <ShimmerPlaceholder
                         style={style.image}
@@ -46,7 +57,11 @@ const CategoriesCard = ({
                 </View>
             )}
             {category?.strCategory && (
-                <Title type={5} text={category.strCategory} color="black" />
+                <Title
+                    type={5}
+                    text={category.strCategory}
+                    color={colors.text}
+                />
             )}
         </TouchableOpacity>
     );
