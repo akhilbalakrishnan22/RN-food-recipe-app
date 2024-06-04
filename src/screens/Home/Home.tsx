@@ -1,6 +1,6 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, View } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import globalStyle from '../../../assets/styles/globalStyle';
 import {
@@ -20,7 +20,7 @@ import style from './style';
 const Home = () => {
     const navigation = useNavigation<AppStackNavigationProp>();
 
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [suggestedLoading, setSuggestedLoading] = useState<boolean>(true);
     const [trendingLoading, setTrendingLoading] = useState<boolean>(true);
 
@@ -141,6 +141,14 @@ const Home = () => {
     };
 
     const { colors } = useTheme();
+
+    if (loading) {
+        return (
+            <View style={globalStyle.loadingIndicator}>
+                <ActivityIndicator size={'large'} color={'#25AE87'} />
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView
